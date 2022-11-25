@@ -1,0 +1,49 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#root {
+  display: flex;
+  justify-content: center;
+  padding: 50px;
+}
+
+.App {
+  width: 800px;
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+}
+
+.post {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  border: 2px solid black;
+  margin-bottom: 15px;
+  transition: all 500ms ease-in;
+}
+
+.post-enter {
+  opacity: 0;
+  transform: translateY(350px);
+  transition: all 500ms ease-in;
+}
+.post-enter-active {
+  opacity: 1;
+  transform: translateY(0px);
+  transition: all 500ms ease-in;
+}
+.post-exit {
+  opacity: 1;
+}
+.post-exit-active {
+  transform: translateX(-350px);
+  opacity: 0;
+  transition: all 500ms ease-in;
+}

@@ -1,0 +1,10 @@
+.page {
+  margin-left: 2px;
+  cursor: pointer;
+}
+
+.page__current {
+  border-color: orange;
+  color: orange;
+  font-weight: bold;
+}
