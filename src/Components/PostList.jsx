@@ -3,7 +3,6 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group';
 import PostItem from './PostItem';
 
 const PostList = ({ posts, title, removePost }) => {
-  // console.log(posts)
   return (
     <div>
       <h1 style={{ textAlign: 'center' }}>{title}</h1>

@@ -2,7 +2,6 @@ import React from 'react';
 import Button from './UI/button/Button';
 
 const PostItem = ({ post, removePost, number }) => {
-  // console.log(post);
   return (
     <div className="post">
       <div className="post__content">

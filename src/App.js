@@ -11,15 +11,17 @@ import { useFetching } from './hooks/useFetching';
 import { usePagination } from './hooks/usePagination';
 import { usePosts } from './hooks/usePosts';
 import './styles/app.css';
-import { getPagesCount } from './utils/pages';
 
 function App() {
   const [posts, setPosts] = useState([]);
   const [postsTotalCount, setPostsTotalCount] = useState(0);
   const [limit, setLimit] = useState(10);
-  const [totalPages, setTotalPages] = useState(0);
-  const [currentPage, setCurrentPage] = useState(1);
-  let pages = usePagination(totalPages);
+
+  const { currentPage, setCurrentPage, pages } = usePagination(
+    postsTotalCount,
+    limit,
+    1
+  );
 
   const [loadPosts, isPostsLoading, isPostsLoadingError] = useFetching(
     async () => {
@@ -30,13 +32,12 @@ function App() {
       const postsCount = +headers['x-total-count'];
       setPosts(posts);
       setPostsTotalCount(postsCount);
-      setTotalPages(getPagesCount(postsCount, limit));
     }
   );
 
   useEffect(() => {
     loadPosts(setPosts);
-  }, [currentPage]);
+  }, [currentPage, limit]);
 
   const [filter, setFilter] = useState({
     sortBy: null,
@@ -85,13 +86,15 @@ function App() {
           removePost={removePost}
         />
       )}
-      <div className="center">
-        <Pagination
-          pages={pages}
-          currentPage={currentPage}
-          onClick={setCurrentPage}
-        />
-      </div>
+      <Pagination
+        pages={pages}
+        currentPage={currentPage}
+        onClick={setCurrentPage}
+        limit={limit}
+        setLimit={setLimit}
+        setCurrentPage={setCurrentPage}
+        totalCount={postsTotalCount}
+      />
     </div>
   );
 }
