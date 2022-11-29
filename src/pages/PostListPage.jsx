@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { createRef, useEffect, useState } from 'react';
 import PostService from '../API/PostService';
 import PostFilter from '../Components/PostFilter';
 import PostForm from '../Components/PostForm';
@@ -8,6 +8,7 @@ import Loader from '../Components/UI/loader/Loader';
 import Modal from '../Components/UI/modal/Modal';
 import Pagination from '../Components/UI/pagination/Pagination';
 import { useFetching } from '../hooks/useFetching';
+import { useIntersectionObserver } from '../hooks/useIntersectionObserver';
 import { usePagination } from '../hooks/usePagination';
 import { usePosts } from '../hooks/usePosts';
 import '../styles/app.css';
@@ -17,7 +18,7 @@ function PostListPage() {
   const [postsTotalCount, setPostsTotalCount] = useState(0);
   const [limit, setLimit] = useState(10);
   const [scroll, setScroll] = useState(false);
-  const observer = {};
+  const elementToObserve = createRef();
 
   const { currentPage, setCurrentPage, pages } = usePagination(
     postsTotalCount,
@@ -25,25 +26,14 @@ function PostListPage() {
     1
   );
 
-  const refSetIntersectionObserver = useCallback(
-    (node) => {
-      console.log(scroll);
-      console.log(posts.length);
-      if (!scroll) return;
-      if (node !== null) {
-        observer.current = new IntersectionObserver((entries) => {
-          const el = entries[0];
-          if (el.isIntersecting && currentPage < pages.length) {
-            setCurrentPage(currentPage + 1);
-            observer.current.disconnect();
-            observer.current.unobserve(node);
-            console.log(currentPage);
-          }
-        });
-        observer.current.observe(node);
-      }
-    },
-    [scroll, posts]
+  useIntersectionObserver(
+    elementToObserve,
+    () => setCurrentPage(currentPage + 1),
+    {
+      canRunCallback: currentPage < pages.length,
+      canSetObserver: scroll,
+      deps: [scroll, posts],
+    }
   );
 
   const [loadPosts, isPostsLoading, isPostsLoadingError] = useFetching(
@@ -108,7 +98,7 @@ function PostListPage() {
         title={'Список постов'}
         posts={postsToRender}
         removePost={removePost}
-        lastRef={refSetIntersectionObserver}
+        lastRef={elementToObserve}
       />
       {/* <div className="" ref={lastElement} style={{ height: '20px' }}></div> */}
       {!scroll && (
