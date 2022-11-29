@@ -6,11 +6,19 @@
 
 #root {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  /* justify-content: center; */
+  align-items: center;
   padding: 50px;
 }
 
-.App {
+a {
+  text-decoration: none;
+  color: black;
+}
+
+.page,
+.wrapper {
   width: 800px;
 }
 
@@ -46,4 +54,29 @@
   transform: translateX(-350px);
   opacity: 0;
   transition: all 500ms ease-in;
+}
+
+.post__btns {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar {
+  height: 50px;
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 15px;
+  margin-bottom: 30px;
+  background-color: rgba(38, 128, 245, 0.718);
+}
+
+.navbar__links {
+  width: 800px;
+  display: flex;
+  justify-content: end;
+  align-items: flex-end;
 }

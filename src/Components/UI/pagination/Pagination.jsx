@@ -11,6 +11,7 @@ const Pagination = ({
   setLimit,
   setCurrentPage,
   totalCount,
+  setScroll,
 }) => (
   <div
     style={{ display: 'flex', justifyContent: 'start', alignItems: 'center' }}
@@ -21,19 +22,27 @@ const Pagination = ({
         options={[
           { value: 10, text: '10' },
           { value: 20, text: '20' },
+          { value: 'scroll', text: 'С подгрузкой' },
           { value: totalCount, text: 'Все' },
         ]}
         value={limit}
         onChange={(evt) => {
-          setCurrentPage(1)
+          setCurrentPage(1);
           switch (evt.target.value) {
             case '10':
+              setScroll(false);
               setLimit(10);
               return;
             case '20':
+              setScroll(false);
               setLimit(20);
               return;
+            case `scroll`:
+              setLimit(10);
+              setScroll(true);
+              return;
             case `${totalCount}`:
+              setScroll(false);
               setLimit(totalCount);
               return;
 
